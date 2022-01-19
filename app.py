@@ -2,11 +2,30 @@ from flask import *
 import pandas as pd
 import os
 from os.path import join, dirname, realpath
+import mysql.connector
+
 app = Flask(__name__)  
  
 # Upload folder
 UPLOAD_FOLDER = 'static/files'
 app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
+
+# Database
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="1234",
+  database="mysql",
+  auth_plugin='mysql_native_password'
+)
+
+mycursor = mydb.cursor()
+
+mycursor.execute("SHOW DATABASES")
+
+# View All Database
+for x in mycursor:
+  print(x)
 
 # Here we upload file
 @app.route('/')  
@@ -42,5 +61,17 @@ def getData():
         pairs=[(date,objects,image) for date,objects,image in zip(Dates,Objects,Image)]
         
     return render_template('form.html',pair=pairs)
+
+def parseCSV(filePath):
+      # CVS Column Names
+      col_names = ['timestamp','timestamp','image_name']
+      # Use Pandas to parse the CSV file
+      csvData = pd.read_csv(filePath,names=col_names, header=None)
+      # Loop through the Rows
+      for i,row in csvData.iterrows():
+             sql = "INSERT INTO addresses (timestamp,objects_detected,image_name) VALUES (%s, %s, %s)"
+             value = (row['timestamp'],row['timestamp'],row['image_name'])
+             mycursor.execute(sql, value, if_exists='append')
+             mydb.commit()
 if __name__ == '__main__':  
     app.run(debug = True)  
