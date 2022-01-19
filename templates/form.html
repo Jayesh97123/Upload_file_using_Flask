@@ -1,0 +1,15 @@
+
+<table border="3" align="center">
+    <tr>
+        <th>Date</th>
+        <th>Object Detected</th>
+        <th>Image</th>
+    </tr>
+    {% for pairs in pair %}
+    <tr> 
+        <td>{{pairs[0]}}</td>
+        <td>{{pairs[1]}}</td>
+        <td ><img src="../static/files/images/{{pairs[2]}}" style="width: 200px;height: 200px;"></td>    
+    </tr>
+    {% endfor %}
+</table>
