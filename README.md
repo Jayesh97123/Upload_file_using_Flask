@@ -13,3 +13,8 @@ On the same page create 2 input date elements from which the user can select the
 and end date. Now fetch the results between these dates and display them to the user in a
 table format. The table should consist of the following information: image_name, detections,
 image (use the images provided in the zip file). 
+
+Task-3 (Bonus Points if you attempt this):
+A report should be generated in the backend application which counts the total number of
+objects detected between the given date range. Use the python csv module to generate the
+csv. The sample output report (report.csv) will be provided to you in the zip file
