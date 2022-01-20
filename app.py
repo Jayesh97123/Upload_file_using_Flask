@@ -59,6 +59,34 @@ def getData():
         Objects=dateset['objects_detected'].loc[mask]
         Image=dateset['image_name'].loc[mask]
         pairs=[(date,objects,image) for date,objects,image in zip(Dates,Objects,Image)]
+        li=list(Objects)
+        new_list=[]
+        for i in li:
+          a=i.split(',')
+          new_list.extend(a)
+        new_list1=set(new_list)
+        new_list1=list(new_list1)
+        new_list2=new_list1
+        # my data rows as dictionary objects
+        final=[]
+        # field names
+        h=['object','count']
+        for i in new_list2: 
+          n=[]
+          n.append(i)
+          no=new_list.count(i)
+          n.append(no)
+          final.append(dict(zip(h,n)))
+        # name of csv file
+        filename='static/files/record.csv'
+        # writing to csv file
+        with open(filename,'w') as csvfile:
+          # creating a csv dict writer object
+          writer=csv.DictWriter(csvfile, fieldnames=h)
+          # writing headers (field names)
+          writer.writeheader()
+          # writing data rows
+          writer.writerows(final)
         
     return render_template('form.html',pair=pairs)
 
